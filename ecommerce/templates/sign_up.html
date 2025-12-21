@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup Page</title>
+</head>
+<body>
+
+    <h2>Create an Account</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div style="color: red;">
+                Please correct the errors below.
+            </div>
+        {% endif %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <p>Already have an account?
+        <a href="{% url 'login' %}">Login</a>
+    </p>
+
+</body>
+</html>
