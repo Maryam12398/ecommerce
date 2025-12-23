@@ -1,6 +1,7 @@
 from django import forms
 # from .models import Customer_user
 from django.contrib.auth.models import User
+
 class SignUpForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, label="Password")
     confirm_password = forms.CharField(widget=forms.PasswordInput, label="confirm_Password")

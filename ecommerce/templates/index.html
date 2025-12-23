@@ -37,13 +37,25 @@
                         <li class="dropdown dropdown-hover">
                             <a href="#" data-toggle="dropdown"><img src= 'assets/img/english.png' class="flag-img" alt="" /> English <i class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#"><img src= 'assets/img/english.png' class="flag-img" alt="" /> English</a></li>
-                                <li><a href="#"><img src= 'assets/img/german.png' class="flag-img" alt="" /> German</a></li>
-                                <li><a href="#"><img src= 'assets/img/french.png' class="flag-img" alt="" /> French</a></li>
-                                <li><a href="#"><img src= 'assets/img/spanish.png' class="flag-img" alt="" /> Spanish</a></li>
-                                <li><a href="#"><img src= 'assets/img/chinese.png' class="flag-img" alt="" /> Chinese</a></li>
+                                {% load i18n %}
+                                {% get_available_languages as LANGUAGES %}
+                            
+                                {% for lang_code, lang_name in LANGUAGES %}
+                                    <li>
+                                        <form action="{% url 'set_language' %}" method="post" style="margin: 0;">
+                                            {% csrf_token %}
+                                            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                                            <input name="language" type="hidden" value="en">
+                                            <button type="submit" style="background: none; border: none; padding: 5px 15px; width: 100%; text-align: left; cursor: pointer;display: flex; align-items: center;">
+                                               <img src="assets/img/{{ lang_name|lower }}.png" class="flag-img" alt="" style="margin-right: 10px;" /> 
+                                               <span style="color: #ece8e8 !important; display: inline-block !important;">{{ lang_name }}</span>
+                                            </button>
+                                        </form> 
+                                    </li>
+                                {% endfor %}
                             </ul>
                         </li>
+                        {% load i18n %}
                         <li><a href="#">Customer Care</a></li>
                         <li><a href="#">Order Tracker</a></li>
                     </ul>
@@ -206,7 +218,7 @@
                                         <li><a href="checkout_info.html">Checkout Shipping</a></li>
                                         <li><a href="checkout_payment.html">Checkout Payment</a></li>
                                         <li><a href="checkout_complete.html">Checkout Complete</a></li>
-                                        <li><a href="my_account.html">My Account</a></li>
+                                        <li><a href="my_account">My Account</a></li>
                                         <li><a href="contact_us.html">Contact Us</a></li>
                                         <li><a href="about_us.html">About Us</a></li>
                                         <li><a href="faq.html">FAQ</a></li>
@@ -294,10 +306,23 @@
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="signup">
-                                    <img src="assets/img/user-1.jpg" class="user-img" alt="" /> 
-                                    <span class="hidden-md hidden-sm hidden-xs">Login / Register</span>
-                                </a>
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'my_account' %}">
+                                        <img src="assets/img/user-1.jpg" class="user-img" alt="" /> 
+                                        <span class="hidden-md hidden-sm hidden-xs">Hi, {{ user.username }}</span>
+                                    </a>
+                                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" style="background: none; border: none; color: #ff5b57; cursor: pointer;">
+                                            <i class="fa fa-sign-out"></i> Logout
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <a href="{% url 'login' %}">
+                                        <!-- <img src="assets/img/user-1.jpg" class="user-img" alt="" />  -->
+                                        <span class="hidden-md hidden-sm hidden-xs">Login / Register</span>
+                                    </a>
+                                {% endif %}
                             </li>
                         </ul>
                     </div>
@@ -308,7 +333,7 @@
             <!-- END container -->
         </div>
         <!-- END #header -->
-    
+    <!-- <p>The language is currently: {{ LANGUAGE_CODE }}</p> -->
         <!-- BEGIN #slider -->
         <div id="slider" class="section-container p-0 bg-black-darker">
             <!-- BEGIN carousel -->

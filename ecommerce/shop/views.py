@@ -3,14 +3,22 @@ from .form import SignUpForm
 from .models import Customer_user
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def home_page(request):
     # This looks inside your 'templates' folder automatically
     # Replace 'index.html' with the actual name of your main HTML file
     return render(request, 'index.html')
+@login_required
+def my_account(request):
+    # This looks inside your 'templates' folder automatically
+    # Replace 'index.html' with the actual name of your main HTML file
+    return render(request, 'my_account.html')
 
-
+# def logout_view(request):
+#     logout(request)
+#     return redirect('home_page')
 # def Sign_up(request):
 #     if request.method == "POST":
 #         form = SignUpForm(request.POST)
@@ -40,7 +48,7 @@ def Sign_up(request):
             )
 
             login(request, user)
-            return redirect("home_page")
+            return redirect("my_account")
     else:
         form = SignUpForm()
 
