@@ -77,7 +77,7 @@
                             <span class="icon-bar"></span>
                         </button>
                         <div class="header-logo">
-                            <a href="index.html">
+                            <a href="">
                                 <span class="brand"></span>
                                 <span>Color</span>Admin
                                 <small>e-commerce frontend theme</small>
@@ -196,7 +196,7 @@
                                         <span class="arrow top"></span>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="index.html">Home (Default)</a></li>
+                                        <li><a href="">Home (Default)</a></li>
                                         <li><a href="index_fixed_header.html">Home (Fixed Header)</a></li>
                                         <li><a href="index_inverse_header.html">Home (Inverse Header)</a></li>
                                         <li><a href="search_results.html">Search Results</a></li>
@@ -296,7 +296,15 @@
                             <li>
                                 {% if user.is_authenticated %}
                                     <a href="{% url 'my_account' %}">
-                                        <img src="assets/img/user-1.jpg" class="user-img" alt="" /> 
+                                        {% if user.customer_user.image %}
+                                            <img src="{{ user.customer_user.image.url }}"
+                                                 class="user-img"
+                                                 style="width:30px; height:30px; border-radius:50%; object-fit:cover;">
+                                        {% else %}
+                                            <img src="/media/default.png"
+                                                 class="user-img"
+                                                 style="width:30px; height:30px; border-radius:50%;">
+                                        {% endif %}
                                         <span class="hidden-md hidden-sm hidden-xs">Hi, {{ user.username }}</span>
                                     </a>
                                     <form action="{% url 'logout' %}" method="post" style="display: inline;">

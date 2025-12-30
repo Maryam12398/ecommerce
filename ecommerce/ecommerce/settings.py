@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 
 from django.utils.translation import gettext_lazy as _
 LANGUAGE_CODE = 'en-us'
-
+ 
 LANGUAGES = [
     ('en', _('English')),
     ('de', _('German')),
@@ -131,3 +131,6 @@ STATICFILES_DIRS = [BASE_DIR / 'assets']
 # login_URL = 
 LOGIN_REDIRECT_URL = 'my_account'
 LOGOUT_REDIRECT_URL = 'home_page'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
