@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from .form import SignUpForm,UserUpdateForm,ProfileUpdateForm
-from .models import Customer_user
+from .models import Customer_user,Product
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.models import User
@@ -20,7 +20,8 @@ def about_us(request):
     return render(request, 'about_us.html')
 
 def product(request):
-    return render(request, 'product.html')
+    products = Product.objects.all()
+    return render(request, 'product.html', {'products':products})
 
 def product_detail(request):
     return render(request, 'product_detail.html')
