@@ -366,47 +366,75 @@
                         </div>
                         <!-- END search-toolbar -->
                        <!-- BEGIN search-item-container -->
+                       <!-- BEGIN search-item-container -->
                        <div class="search-item-container">
+
+                           <!-- BEGIN row -->
+                           <div class="row">
+
+                               {% for product in products %}
+                               <!-- BEGIN col -->
+                               <div class="col-md-3 col-sm-6">
+
+                                   <!-- BEGIN item -->
+                                   <div class="item item-thumbnail">
+
+                                       <!-- BEGIN item-image -->
+                                       <a href="{% url 'product_detail' product.id %}" class="item-image">                       
+                                           <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+
+                                           <!-- BEGIN discount -->
+                                           {% if product.discount > 0 %}
+                                               <div class="discount">{{ product.discount }}% OFF</div>
+                                           {% endif %}
+                                           <!-- END discount -->
+                                       </a>
+                                       <!-- END item-image -->
                        
-                           {% for product in products %}
-                           <!-- BEGIN item-row -->
-                           <div class="item-row">
-                               <!-- BEGIN item -->
-                               <div class="item item-thumbnail">
-                                   <a href=# class="item-image">
-                                       <img src="{{ product.image.url }}" alt="{{ product.name }}" />
-                                       
-                                       {% if product.discount %}
-                                       <div class="discount">{{ product.discount }}% OFF</div>
-                                       {% endif %}
-                                   </a>
+                                       <!-- BEGIN item-info -->
+                                       <div class="item-info">
+
+                                           <!-- BEGIN item-title -->
+                                           <h4 class="item-title">
+                                               <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+                                           </h4>
+                                           <!-- END item-title -->
+
+                                           <!-- BEGIN item-desc -->
+                                           <p class="item-desc">
+                                               {{ product.description|truncatewords:10 }}
+                                           </p>
+                                           <!-- END item-desc -->
                        
-                                   <div class="item-info">
-                                       <h4 class="item-title">
-                                           <a href= #>
-                                               {{ product.name }}
-                                           </a>
-                                       </h4>
+                                           <!-- BEGIN item-price -->
+                                           <div class="product-price">
+                                               {% if product.discount > 0 %}
+                                                  <div> <del><span class="old-price">$ {{ product.price }}</span></del></div>
+                                                   <span class="new-price">$ {{ product.discounted_price }}</span>
+                                               {% else %}
+                                                   <span class="new-price">$ {{ product.price }}</span>
+                                               {% endif %}
+                                           </div>
+                                           <!-- END item-price -->
                        
-                                       <p class="item-desc">{{ product.description }}</p>
-                       
-                                       <div class="item-price">Rs {{ product.price }}</div>
-                       
-                                       {% if product.old_price %}
-                                       <div class="item-discount-price">
-                                           Rs {{ product.old_price }}
                                        </div>
-                                       {% endif %}
+                                       <!-- END item-info -->
+
                                    </div>
+                                   <!-- END item -->
+
                                </div>
-                               <!-- END item -->
+                               <!-- END col -->
+                               
+                              <!-- BEGIN empty -->
+                              {% empty %}
+                                  <p>No products found</p>
+                              <!-- END empty -->
+                               {% endfor %}
+                            
                            </div>
-                           <!-- END item-row -->
-                       
-                           {% empty %}
-                           <p>No products found</p>
-                           {% endfor %}
-                       
+                           <!-- END row -->
+
                        </div>
                        <!-- END search-item-container -->
 

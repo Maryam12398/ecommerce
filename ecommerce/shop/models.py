@@ -25,15 +25,30 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField(null=True,blank=True)
     stock = models.BooleanField(default=True)
+    warranty = models.CharField(default="no warranty")
+    features = models.TextField(blank=True,null=True)
     popular = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='products/',default= 'default_png')
+    image = models.ImageField(upload_to='product/',default= 'default_png')
     brand = models.ForeignKey(Brand,on_delete=models.CASCADE,null=True,blank=True)
     arrival = models.DateTimeField(auto_now=True)
     price = models.IntegerField()
     discount = models.IntegerField()
+    def discounted_price(self):
+        return int(self.price - (self.price * self.discount / 100))
     def __str__(self):
         return self.name
-    def discount_percentage(self):
-        if self.old_price and self.old_price > self.price:
-            return int(((self.old_price - self.price) / self.old_price) * 100)
-        return 0
+  
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete= models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='products/')
+    caption = models.TextField(blank=True, null=True)
+    def __str__(self):
+        return f"{self.product.name} Image"
+    
+class ProductSpec(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='specs')
+    field = models.CharField(blank=True, max_length=255)  
+    value = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.field}"

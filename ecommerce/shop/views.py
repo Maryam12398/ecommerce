@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .form import SignUpForm,UserUpdateForm,ProfileUpdateForm
 from .models import Customer_user,Product
 from django.contrib import messages
@@ -21,10 +21,18 @@ def about_us(request):
 
 def product(request):
     products = Product.objects.all()
+    
     return render(request, 'product.html', {'products':products})
 
-def product_detail(request):
-    return render(request, 'product_detail.html')
+def product_detail(request,pk):
+    product = get_object_or_404(Product, id=pk)
+    images = product.images.all()
+    context = {
+        'product': product,
+        'images': images,
+    }
+
+    return render(request, 'product_detail.html',context)
 
 def checkout_cart(request):
     return render(request, 'checkout_cart.html')
